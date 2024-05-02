@@ -1,5 +1,9 @@
 #!/bin/bash
 
+## Exit here, maybe possible in the future
+echo "GHCR setup not currently possible"
+exit 0
+
 ## Login to ghcr
 echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_USER} --password-stdin ghcr.io
 
