@@ -1,11 +1,7 @@
 #!/bin/bash
 set -e  # Exit on non-zero exit code from commands
 
-## Get key from user
-echo -n 'API_KEY_ID: '
-read apiKey
-echo -n 'KEY_SECRET: '
-read secretKey
+[[ -z ${AKUITY_API_KEY_ID} ]] || [[ -z ${AKUITY_API_KEY_SECRET} ]] && echo "Please export Akuity API Creds" && exit 13
 
 # Function to get the health status code
 get_health_status() {
