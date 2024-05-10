@@ -45,6 +45,8 @@ argocd login \
 echo "Configured the \"argocd\" cli."
 
 # Trigger refresh since app may get deployed before repo server is up (stuck with ComparisonError).
+##jitter
+sleep 5
 for app in dev staging prod
 do
     argocd app get guestbook-simple-${app} --refresh > /dev/null
