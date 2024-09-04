@@ -14,7 +14,7 @@ spec:
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/reikamoon/guestbook
+        - image: ghcr.io/<user>/guestbook
           path: app/env/dev
     argoCDAppUpdates: []
 
@@ -32,11 +32,11 @@ spec:
       - name: dev
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
+    - repoURL: https://github.com/<user>/kargo-quickstart-template
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/reikamoon/guestbook
+        - image: ghcr.io/<user>/guestbook
           path: app/env/staging
     argoCDAppUpdates: []
 ---
@@ -53,11 +53,11 @@ spec:
       - name: staging
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
+    - repoURL: https://github.com/<user>/kargo-quickstart-template
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/reikamoon/guestbook
+        - image: ghcr.io/<user>/guestbook
           path: app/env/prod
       pullRequest: {}
     argoCDAppUpdates: []
