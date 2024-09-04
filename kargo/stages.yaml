@@ -32,7 +32,7 @@ spec:
       - name: dev
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/<user>/kargo-quickstart-template
+    - repoURL: https://github.com/<repo>
       writeBranch: main
       kustomize:
         images:
@@ -53,7 +53,7 @@ spec:
       - name: staging
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/<user>/kargo-quickstart-template
+    - repoURL: https://github.com/<repo>
       writeBranch: main
       kustomize:
         images:
