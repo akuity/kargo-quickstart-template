@@ -6,5 +6,5 @@ metadata:
 spec:
   subscriptions:
   - image:
-      repoURL: ghcr.io/reikamoon/guestbook
+      repoURL: ghcr.io/<user>/guestbook
       tagSelectionStrategy: SemVer
