@@ -10,7 +10,7 @@ spec:
     warehouse: guestbook
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
+    - repoURL: https://github.com/<repo>
       writeBranch: main
       kustomize:
         images:
