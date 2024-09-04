@@ -10,11 +10,11 @@ spec:
     warehouse: guestbook
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/<repo>
+    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/<user>/guestbook
+        - image: ghcr.io/reikamoon/guestbook
           path: app/env/dev
     argoCDAppUpdates: []
 
@@ -32,11 +32,11 @@ spec:
       - name: dev
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/<repo>
+    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/<user>/guestbook
+        - image: ghcr.io/reikamoon/guestbook
           path: app/env/staging
     argoCDAppUpdates: []
 ---
@@ -53,11 +53,11 @@ spec:
       - name: staging
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/<repo>
+    - repoURL: https://github.com/reikamoon/kargo-quickstart-template
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/<user>/guestbook
+        - image: ghcr.io/reikamoon/guestbook
           path: app/env/prod
       pullRequest: {}
     argoCDAppUpdates: []
