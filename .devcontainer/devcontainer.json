@@ -1,6 +1,6 @@
 {
 	"name": "kargo-quickstart",
-	"image": "quay.io/akuity/argo-cd-learning-assets/akuity-devcontainer:0.2.2",
+	"image": "quay.io/akuity/argo-cd-learning-assets/akuity-devcontainer:0.2.4",
 
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {
