@@ -60,9 +60,9 @@ spec:
   - origin:
       kind: Warehouse
       name: guestbook
-  sources:
-    stages:
-    - staging
+    sources:
+      stages:
+      - staging
   promotionMechanisms:
     gitRepoUpdates:
     - repoURL: https://github.com/<repo>
