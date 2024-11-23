@@ -14,13 +14,13 @@ spec:
           - list:
               elements:
               - env: dev
-              - env: staging
+              - env: uat
               - env: prod
   template:
     metadata:
       name: 'guestbook-simple-{{env}}'
       annotations:
-        kargo.akuity.io/authorized-stage: kargo-simple:*
+        kargo.akuity.io/authorized-stage: kargo-simple:{{env}}
     spec:
       project: default
       source:
