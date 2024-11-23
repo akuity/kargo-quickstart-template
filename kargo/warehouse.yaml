@@ -7,4 +7,4 @@ spec:
   subscriptions:
   - image:
       repoURL: ghcr.io/<user>/guestbook
-      tagSelectionStrategy: SemVer
+      discoveryLimit: 5
