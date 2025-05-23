@@ -12,10 +12,15 @@ spec:
       direct: true
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -30,7 +35,8 @@ spec:
         config:
           path: ./src/app/env/dev
           images:
-          - image: ghcr.io/<user>/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/app/env/dev
@@ -49,8 +55,8 @@ spec:
           apps:
           - name: guestbook-simple-dev
             sources:
-            - repoURL: https://github.com/<repo>
-              desiredRevsion: ${{ outputs.commit.commit }}
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -67,10 +73,15 @@ spec:
       - dev
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -85,7 +96,8 @@ spec:
         config:
           path: ./src/app/env/staging
           images:
-          - image: ghcr.io/<user>/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/app/env/staging
@@ -104,7 +116,7 @@ spec:
           apps:
           - name: guestbook-simple-staging
             sources:
-            - repoURL: https://github.com/<repo>
+            - repoURL: ${{ vars.gitRepo }}
               desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
@@ -122,10 +134,15 @@ spec:
       - staging
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -140,7 +157,8 @@ spec:
         config:
           path: ./src/app/env/prod
           images:
-          - image: 
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/app/env/prod
@@ -159,5 +177,5 @@ spec:
           apps:
           - name: guestbook-simple-prod
             sources:
-            - repoURL: https://github.com/<repo>
+            - repoURL: ${{ vars.gitRepo }}
               desiredRevision: ${{ outputs.commit.commit }}
