@@ -12,10 +12,15 @@ spec:
       direct: true
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
@@ -28,9 +33,10 @@ spec:
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./src/app/base
+          path: ./src/app/env/dev
           images:
-          - image: ghcr.io/<user>/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
           path: ./src/app/env/dev
@@ -39,8 +45,7 @@ spec:
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs['update-image'].commitMessage }}
       - uses: git-push
         config:
           path: ./out
@@ -50,15 +55,13 @@ spec:
           apps:
           - name: guestbook-simple-dev
             sources:
-            - repoURL: https://github.com/<repo>
-              kustomize:
-               images:
-               - repoURL: ghcr.io/<user>/guestbook
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: uat
+  name: staging
   namespace: kargo-simple
 spec:
   requestedFreight:
@@ -70,14 +73,19 @@ spec:
       - dev
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
-          - branch: stage/uat
+          - branch: env/staging
             create: true
             path: ./out
       - uses: git-clear
@@ -86,30 +94,30 @@ spec:
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./src/base
+          path: ./src/app/env/staging
           images:
-          - image: ghcr.io/<user>/guestbook
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
-          path: ./src/stages/uat
+          path: ./src/app/env/staging
           outPath: ./out/manifests.yaml
       - uses: git-commit
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs['update-image'].commitMessage }}
       - uses: git-push
         config:
           path: ./out
-          targetBranch: stage/uat
+          targetBranch: env/staging
       - uses: argocd-update
         config:
           apps:
-          - name: kargo-simple-uat
+          - name: guestbook-simple-staging
             sources:
-            - repoURL: https://github.com/<repo>
-              desiredCommitFromStep: commit
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -123,17 +131,22 @@ spec:
       name: guestbook
     sources:
       stages:
-      - uat
+      - staging
   promotionTemplate:
     spec:
+      vars:
+      - name: gitRepo
+        value: https://github.com/<repo>
+      - name: imageRepo
+        value: ghcr.io/<user>/guestbook
       steps:
       - uses: git-clone
         config:
-          repoURL: https://github.com/<repo>
+          repoURL: ${{ vars.gitRepo }}
           checkout:
           - branch: main
             path: ./src
-          - branch: stage/prod
+          - branch: env/prod
             create: true
             path: ./out
       - uses: git-clear
@@ -142,27 +155,27 @@ spec:
       - uses: kustomize-set-image
         as: update-image
         config:
-          path: ./src/base
+          path: ./src/app/env/prod
           images:
-          - image: 
+          - image: ${{ vars.imageRepo }}
+            tag: ${{ imageFrom(vars.imageRepo).Tag }}
       - uses: kustomize-build
         config:
-          path: ./src/stages/prod
+          path: ./src/app/env/prod
           outPath: ./out/manifests.yaml
       - uses: git-commit
         as: commit
         config:
           path: ./out
-          messageFromSteps:
-          - update-image
+          message: ${{ outputs['update-image'].commitMessage }}
       - uses: git-push
         config:
           path: ./out
-          targetBranch: stage/prod
+          targetBranch: env/prod
       - uses: argocd-update
         config:
           apps:
-          - name: my-argocd-instance
+          - name: guestbook-simple-prod
             sources:
-            - repoURL: https://github.com/<repo>
-              desiredCommitFromStep: commit
+            - repoURL: ${{ vars.gitRepo }}
+              desiredRevision: ${{ outputs.commit.commit }}
