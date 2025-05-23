@@ -85,7 +85,7 @@ spec:
           checkout:
           - branch: main
             path: ./src
-          - branch: stage/staging
+          - branch: env/staging
             create: true
             path: ./out
       - uses: git-clear
@@ -110,7 +110,7 @@ spec:
       - uses: git-push
         config:
           path: ./out
-          targetBranch: stage/staging
+          targetBranch: env/staging
       - uses: argocd-update
         config:
           apps:
@@ -146,7 +146,7 @@ spec:
           checkout:
           - branch: main
             path: ./src
-          - branch: stage/prod
+          - branch: env/prod
             create: true
             path: ./out
       - uses: git-clear
@@ -171,7 +171,7 @@ spec:
       - uses: git-push
         config:
           path: ./out
-          targetBranch: stage/prod
+          targetBranch: env/prod
       - uses: argocd-update
         config:
           apps:
